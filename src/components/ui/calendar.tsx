@@ -101,7 +101,7 @@ function Calendar ({
           defaultClassNames.week_number
         ),
         day: cn(
-          'relative w-full h-full p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-square select-none',
+          'relative w-8 h-8 p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-square select-none m-auto',
           defaultClassNames.day
         ),
         range_start: cn(
