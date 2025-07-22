@@ -13,6 +13,7 @@ import { Route as ContainerRouteRouteImport } from './routes/_container/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContainerTestRouteImport } from './routes/_container/test'
 import { Route as ContainerListRouteImport } from './routes/_container/list'
+import { Route as ContainerAddRouteImport } from './routes/_container/add'
 
 const ContainerRouteRoute = ContainerRouteRouteImport.update({
   id: '/_container',
@@ -33,14 +34,21 @@ const ContainerListRoute = ContainerListRouteImport.update({
   path: '/list',
   getParentRoute: () => ContainerRouteRoute,
 } as any)
+const ContainerAddRoute = ContainerAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => ContainerRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/add': typeof ContainerAddRoute
   '/list': typeof ContainerListRoute
   '/test': typeof ContainerTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/add': typeof ContainerAddRoute
   '/list': typeof ContainerListRoute
   '/test': typeof ContainerTestRoute
 }
@@ -48,15 +56,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_container': typeof ContainerRouteRouteWithChildren
+  '/_container/add': typeof ContainerAddRoute
   '/_container/list': typeof ContainerListRoute
   '/_container/test': typeof ContainerTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/list' | '/test'
+  fullPaths: '/' | '/add' | '/list' | '/test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/list' | '/test'
-  id: '__root__' | '/' | '/_container' | '/_container/list' | '/_container/test'
+  to: '/' | '/add' | '/list' | '/test'
+  id:
+    | '__root__'
+    | '/'
+    | '/_container'
+    | '/_container/add'
+    | '/_container/list'
+    | '/_container/test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,15 +109,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContainerListRouteImport
       parentRoute: typeof ContainerRouteRoute
     }
+    '/_container/add': {
+      id: '/_container/add'
+      path: '/add'
+      fullPath: '/add'
+      preLoaderRoute: typeof ContainerAddRouteImport
+      parentRoute: typeof ContainerRouteRoute
+    }
   }
 }
 
 interface ContainerRouteRouteChildren {
+  ContainerAddRoute: typeof ContainerAddRoute
   ContainerListRoute: typeof ContainerListRoute
   ContainerTestRoute: typeof ContainerTestRoute
 }
 
 const ContainerRouteRouteChildren: ContainerRouteRouteChildren = {
+  ContainerAddRoute: ContainerAddRoute,
   ContainerListRoute: ContainerListRoute,
   ContainerTestRoute: ContainerTestRoute,
 }
