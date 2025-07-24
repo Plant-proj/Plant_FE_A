@@ -12,8 +12,12 @@ import { LucideCalendar } from 'lucide-react'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const addFormSchema = z.object({
+  type: z.enum(['INCOME', 'EXPENSE'], {
+    error: '수입/지출을 선택해주세요.'
+  }).default('EXPENSE'),
   where: z.string().min(1, {
     error: '사용처를 입력해주세요.'
   }),
@@ -52,23 +56,47 @@ function RouteComponent () {
     <>
       <p className='text-4xl font-semibold mt-12'>수입/지출 입력</p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-12'>
-          <FormField
-            control={form.control}
-            name='where'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder='어디에 사용했나요?'
-                    className='mt-4'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+          <div className='flex items-center space-x-2 mt-4'>
+            <FormField
+              control={form.control}
+              name='type'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    {/* eslint-disable-next-line */}
+                    <Select onValueChange={field.onChange} defaultValue='EXPENSE'>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='수입/지출 선택' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value='INCOME'>수입</SelectItem>
+                        <SelectItem value='EXPENSE'>지출</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='where'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormControl>
+                    <Input
+                      placeholder='어디에 사용했나요?'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name='category'
@@ -128,7 +156,7 @@ function RouteComponent () {
             control={form.control}
             name='date'
             render={({ field }) => (
-              <FormItem className='flex flex-col'>
+              <FormItem className='flex flex-col mb-2'>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
