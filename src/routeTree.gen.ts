@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContainerRouteRouteImport } from './routes/_container/route'
 import { Route as ContainerIndexRouteImport } from './routes/_container/index'
 import { Route as ContainerTestRouteImport } from './routes/_container/test'
+import { Route as ContainerReportRouteImport } from './routes/_container/report'
 import { Route as ContainerListRouteImport } from './routes/_container/list'
 import { Route as ContainerAddRouteImport } from './routes/_container/add'
 
@@ -29,6 +30,11 @@ const ContainerTestRoute = ContainerTestRouteImport.update({
   path: '/test',
   getParentRoute: () => ContainerRouteRoute,
 } as any)
+const ContainerReportRoute = ContainerReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => ContainerRouteRoute,
+} as any)
 const ContainerListRoute = ContainerListRouteImport.update({
   id: '/list',
   path: '/list',
@@ -43,12 +49,14 @@ const ContainerAddRoute = ContainerAddRouteImport.update({
 export interface FileRoutesByFullPath {
   '/add': typeof ContainerAddRoute
   '/list': typeof ContainerListRoute
+  '/report': typeof ContainerReportRoute
   '/test': typeof ContainerTestRoute
   '/': typeof ContainerIndexRoute
 }
 export interface FileRoutesByTo {
   '/add': typeof ContainerAddRoute
   '/list': typeof ContainerListRoute
+  '/report': typeof ContainerReportRoute
   '/test': typeof ContainerTestRoute
   '/': typeof ContainerIndexRoute
 }
@@ -57,19 +65,21 @@ export interface FileRoutesById {
   '/_container': typeof ContainerRouteRouteWithChildren
   '/_container/add': typeof ContainerAddRoute
   '/_container/list': typeof ContainerListRoute
+  '/_container/report': typeof ContainerReportRoute
   '/_container/test': typeof ContainerTestRoute
   '/_container/': typeof ContainerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/add' | '/list' | '/test' | '/'
+  fullPaths: '/add' | '/list' | '/report' | '/test' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/add' | '/list' | '/test' | '/'
+  to: '/add' | '/list' | '/report' | '/test' | '/'
   id:
     | '__root__'
     | '/_container'
     | '/_container/add'
     | '/_container/list'
+    | '/_container/report'
     | '/_container/test'
     | '/_container/'
   fileRoutesById: FileRoutesById
@@ -101,6 +111,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContainerTestRouteImport
       parentRoute: typeof ContainerRouteRoute
     }
+    '/_container/report': {
+      id: '/_container/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ContainerReportRouteImport
+      parentRoute: typeof ContainerRouteRoute
+    }
     '/_container/list': {
       id: '/_container/list'
       path: '/list'
@@ -121,6 +138,7 @@ declare module '@tanstack/react-router' {
 interface ContainerRouteRouteChildren {
   ContainerAddRoute: typeof ContainerAddRoute
   ContainerListRoute: typeof ContainerListRoute
+  ContainerReportRoute: typeof ContainerReportRoute
   ContainerTestRoute: typeof ContainerTestRoute
   ContainerIndexRoute: typeof ContainerIndexRoute
 }
@@ -128,6 +146,7 @@ interface ContainerRouteRouteChildren {
 const ContainerRouteRouteChildren: ContainerRouteRouteChildren = {
   ContainerAddRoute: ContainerAddRoute,
   ContainerListRoute: ContainerListRoute,
+  ContainerReportRoute: ContainerReportRoute,
   ContainerTestRoute: ContainerTestRoute,
   ContainerIndexRoute: ContainerIndexRoute,
 }
